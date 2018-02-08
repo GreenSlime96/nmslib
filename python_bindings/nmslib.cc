@@ -700,18 +700,7 @@ void exportLegacyAPI(py::module * m) {
   });
 
   m->def("knnQueryBatch", [](py::object self, int num_threads, int k, py::object queries) {
-    py::tuple results = self.attr("knnQueryBatch")(queries, k, num_threads);
-    py::array_t<int> items(results[0]);
-
-    auto buffer = items.request();
-    size_t rows = buffer.shape[0];
-
-    // return plain lists of just the ids
-    py::list ret;
-    for (size_t i = 0; i < rows; ++i) {
-      ret.append(items.data(i));
-    }
-    return ret;
+    return self.attr("knnQueryBatch")(queries, k, num_threads)[0];
   });
 
   m->def("freeIndex", [](py::object self) { });

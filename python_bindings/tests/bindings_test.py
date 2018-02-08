@@ -44,13 +44,13 @@ class DenseIndexTestMixin(object):
 
         queries = data[:10]
         results = index.knnQueryBatch(queries, k=10)
-        for query, (ids, distances) in zip(queries, results):
+        for query, ids, distances in zip(queries, *results):
             self.assertTrue(get_hitrate(get_exact_cosine(query, data), ids) >= 5)
 
         # test col-major arrays
         queries = np.asfortranarray(queries)
         results = index.knnQueryBatch(queries, k=10)
-        for query, (ids, distances) in zip(queries, results):
+        for query, ids, distances in zip(queries, *results):
             self.assertTrue(get_hitrate(get_exact_cosine(query, data), ids) >= 5)
 
     def testReloadIndex(self):
